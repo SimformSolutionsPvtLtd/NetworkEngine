@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol Cancellable {
+public protocol Cancellable {
 
     /// A Boolean value stating whether a request is cancelled.
     var isCancelled: Bool { get }

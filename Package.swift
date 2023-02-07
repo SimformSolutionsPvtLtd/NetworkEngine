@@ -11,15 +11,13 @@ let package = Package(
             targets: ["NetworkEngine"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/Alamofire/Alamofire.git", from: "5.6.2"),
-        .package(url: "https://github.com/ashleymills/Reachability.swift", from: "5.1.0")
+        .package(url: "https://github.com/Alamofire/Alamofire.git", from: "5.6.2")
     ],
     targets: [
         .target(
             name: "NetworkEngine",
             dependencies: [
-                "Alamofire",
-                .product(name: "Reachability", package: "Reachability.swift")
+                "Alamofire"
             ]
         ),
         .testTarget(

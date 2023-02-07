@@ -29,11 +29,9 @@ public enum NetworkTask {
     case requestCompositeData(bodyData: Data, urlParameters: [String: Any])
 
     /// A requests body set with encoded parameters combined with url parameters.
-    case requestCompositeParameters(
-        bodyParameters: [String: Any],
-        bodyEncoding: ParameterEncoding,
-        urlParameters: [String: Any]
-    )
+    case requestCompositeParameters(bodyParameters: [String: Any],
+                                    bodyEncoding: ParameterEncoding,
+                                    urlParameters: [String: Any])
 
     /// A file upload task.
     case uploadFile(URL)
@@ -48,9 +46,7 @@ public enum NetworkTask {
     case downloadDestination(DownloadDestination)
 
     /// A file download task to a destination with extra parameters
-    case downloadParameters(
-        parameters: [String: Any],
-        encoding: ParameterEncoding,
-        destination: DownloadDestination
-    )
+    case downloadParameters(parameters: [String: Any],
+                            encoding: ParameterEncoding,
+                            destination: DownloadDestination)
 }

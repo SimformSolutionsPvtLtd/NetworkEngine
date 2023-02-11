@@ -1,10 +1,3 @@
-//
-//  NetworkProviderType.swift
-//
-//
-//  Created by Jatin Kathrotiya on 06/02/23.
-//
-
 import Foundation
 import Alamofire
 import Combine

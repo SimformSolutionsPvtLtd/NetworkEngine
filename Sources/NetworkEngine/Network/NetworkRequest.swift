@@ -1,10 +1,3 @@
-//
-//  NetworkRequest.swift
-//  
-//
-//  Created by Nishchal Visavadiya on 10/02/23.
-//
-
 import Foundation
 import Alamofire
 

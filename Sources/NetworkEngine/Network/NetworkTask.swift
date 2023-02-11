@@ -1,10 +1,3 @@
-//
-//  NetworkTask.swift
-//
-//
-//  Created by Jatin Kathrotiya on 06/02/23.
-//
-
 import Foundation
 
 /// Represents an HTTP task.

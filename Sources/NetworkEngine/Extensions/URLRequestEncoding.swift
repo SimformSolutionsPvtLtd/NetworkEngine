@@ -1,10 +1,3 @@
-//
-//  URLRequest+Encoding.swift
-//  
-//
-//  Created by Jatin Kathrotiya on 06/02/23.
-//
-
 import Foundation
 
 internal extension URLRequest {

@@ -30,14 +30,14 @@ public protocol NetworkProviderType {
     
     @available(macOS 10.15, *)
     @available(iOS 13.0, *)
-    func request(_ target: Target) -> AnyPublisher<String, NetworkError>
+    func request(_ target: Target) -> AnyPublisher<Result<String, NetworkError>, Never>
     
     @available(macOS 10.15, *)
     @available(iOS 13.0, *)
-    func request(_ target: Target) -> AnyPublisher<Data?, NetworkError>
+    func request(_ target: Target) -> AnyPublisher<Result<Data?, NetworkError>, Never>
     
     @available(macOS 10.15, *)
     @available(iOS 13.0, *)
     func request<T: Decodable>(_ target: Target,
-                               type: T.Type) -> AnyPublisher<T, NetworkError>
+                               type: T.Type) -> AnyPublisher<Result<T, NetworkError>, Never>
 }

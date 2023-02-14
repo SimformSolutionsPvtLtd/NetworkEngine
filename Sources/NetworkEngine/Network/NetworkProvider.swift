@@ -80,26 +80,46 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
     
     @available(macOS 10.15, *)
     @available(iOS 13.0, *)
-    public func request(_ target: Target) -> AnyPublisher<String, NetworkError> {
+    public func request(_ target: Target) -> AnyPublisher<Result<String, NetworkError>, Never> {
         return session.request(target)
             .publishString()
-            .value()
-            .mapError({
-                NetworkError.afError($0)
-            })
+            .map { response in
+                let newResult: Result<String, NetworkError>
+                switch response.result {
+                case .success(let data):
+                    newResult = .success(data)
+                case .failure(let error):
+                    if let statusCode = response.response?.statusCode {
+                        newResult = .failure(NetworkError.statusCode(statusCode))
+                        break
+                    }
+                    newResult = .failure(NetworkError.afError(error))
+                }
+                return newResult
+            }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
     
     @available(macOS 10.15, *)
     @available(iOS 13.0, *)
-    public func request(_ target: Target) -> AnyPublisher<Data?, NetworkError> {
+    public func request(_ target: Target) -> AnyPublisher<Result<Data?, NetworkError>, Never> {
         return session.request(target)
             .publishUnserialized()
-            .value()
-            .mapError({
-                NetworkError.afError($0)
-            })
+            .map { response in
+                let newResult: Result<Data?, NetworkError>
+                switch response.result {
+                case .success(let data):
+                    newResult = .success(data)
+                case .failure(let error):
+                    if let statusCode = response.response?.statusCode {
+                        newResult = .failure(NetworkError.statusCode(statusCode))
+                        break
+                    }
+                    newResult = .failure(NetworkError.afError(error))
+                }
+                return newResult
+            }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
@@ -107,15 +127,30 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
     @available(macOS 10.15, *)
     @available(iOS 13.0, *)
     public func request<T: Decodable>(_ target: Target,
-                                      type: T.Type) -> AnyPublisher<T, NetworkError> {
+                                      type: T.Type) -> AnyPublisher<Result<T, NetworkError>, Never> {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = target.keyDecodingStrategy
         return session.request(target)
             .publishDecodable(type: T.self, decoder: decoder)
-            .value()
-            .mapError({
-                NetworkError.afError($0)
-            })
+            .map { response in
+                let newResult: Result<T, NetworkError>
+                switch response.result {
+                case .success(let data):
+                    newResult = .success(data)
+                case .failure(let error):
+                    if case .responseSerializationFailed = error,
+                       let serverData = response.data {
+                        newResult = .failure(NetworkError.serverError(serverData))
+                        break
+                    }
+                    if let statusCode = response.response?.statusCode {
+                        newResult = .failure(NetworkError.statusCode(statusCode))
+                        break
+                    }
+                    newResult = .failure(NetworkError.afError(error))
+                }
+                return newResult
+            }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }

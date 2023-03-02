@@ -27,7 +27,7 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
                     completion(.failure(NetworkError.statusCode(statusCode)))
                     return
                 }
-                completion(.failure(NetworkError.afError(error)))
+                completion(.failure(error is NetworkError ? error : NetworkError.afError(error)))
             }
         }
         return NetworkRequestImpl(request: request)
@@ -45,7 +45,7 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
                     completion(.failure(NetworkError.statusCode(statusCode)))
                     return
                 }
-                completion(.failure(NetworkError.afError(error)))
+                completion(.failure(error is NetworkError ? error : NetworkError.afError(error)))
             }
         }
         return NetworkRequestImpl(request: request)
@@ -70,7 +70,7 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
                     completion(.failure(NetworkError.statusCode(statusCode)))
                     return
                 }
-                completion(.failure(NetworkError.afError(error)))
+                completion(.failure(error is NetworkError ? error : NetworkError.afError(error)))
             }
         }
         return NetworkRequestImpl(request: request)
@@ -93,7 +93,7 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
                         newResult = .failure(NetworkError.statusCode(statusCode))
                         break
                     }
-                    newResult = .failure(NetworkError.afError(error))
+                    newResult = .failure(error is NetworkError ? error : NetworkError.afError(error))
                 }
                 return newResult
             }
@@ -116,7 +116,7 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
                         newResult = .failure(NetworkError.statusCode(statusCode))
                         break
                     }
-                    newResult = .failure(NetworkError.afError(error))
+                    newResult = .failure(error is NetworkError ? error : NetworkError.afError(error))
                 }
                 return newResult
             }
@@ -147,7 +147,7 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
                         newResult = .failure(NetworkError.statusCode(statusCode))
                         break
                     }
-                    newResult = .failure(NetworkError.afError(error))
+                    newResult = .failure(error is NetworkError ? error : NetworkError.afError(error))
                 }
                 return newResult
             }

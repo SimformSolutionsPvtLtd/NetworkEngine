@@ -22,7 +22,7 @@ open class NetworkRequestInterceptor: RequestInterceptor {
             retryAttempts = 0
             return
         }
-        retryAttempts = +1
+        retryAttempts += 1
         guard let response = request.task?.response as? HTTPURLResponse else {
             completion(.doNotRetry)
             retryAttempts = 0

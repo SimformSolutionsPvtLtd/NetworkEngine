@@ -14,6 +14,9 @@ public enum NetworkTask {
 
     /// A request body set with `Encodable` type and custom encoder
     case requestCustomJSONEncodable(Encodable, encoder: JSONEncoder)
+    
+    /// A request to encode the `Encodable` data in to query string
+    case requestParameterEncodable(Encodable)
 
     /// A requests body set with encoded parameters.
     case requestParameters(parameters: [String: Any], encoding: ParameterEncoding)

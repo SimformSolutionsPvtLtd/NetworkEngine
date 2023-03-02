@@ -17,8 +17,8 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
             switch response.result {
             case .success(let data):
                 completion(.success(data))
-            case .failure(let error):
-                if case .responseSerializationFailed = error,
+            case .failure(let afError):
+                if case .responseSerializationFailed = afError,
                    let serverData = response.data {
                     completion(.failure(NetworkError.serverError(serverData)))
                     return
@@ -27,7 +27,12 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
                     completion(.failure(NetworkError.statusCode(statusCode)))
                     return
                 }
-                completion(.failure(error is NetworkError ? error : NetworkError.afError(error)))
+                if case .requestAdaptationFailed(let error) = afError,
+                   let networkError = error as? NetworkError {
+                    completion(.failure(networkError))
+                } else {
+                    completion(.failure(NetworkError.afError(afError)))
+                }
             }
         }
         return NetworkRequestImpl(request: request)
@@ -40,12 +45,17 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
             switch response.result {
             case .success(let data):
                 completion(.success(data))
-            case .failure(let error):
+            case .failure(let afError):
                 if let statusCode = response.response?.statusCode {
                     completion(.failure(NetworkError.statusCode(statusCode)))
                     return
                 }
-                completion(.failure(error is NetworkError ? error : NetworkError.afError(error)))
+                if case .requestAdaptationFailed(let error) = afError,
+                   let networkError = error as? NetworkError {
+                    completion(.failure(networkError))
+                } else {
+                    completion(.failure(NetworkError.afError(afError)))
+                }
             }
         }
         return NetworkRequestImpl(request: request)
@@ -60,8 +70,8 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
             switch response.result {
             case .success(let data):
                 completion(.success(data))
-            case .failure(let error):
-                if case .responseSerializationFailed = error,
+            case .failure(let afError):
+                if case .responseSerializationFailed = afError,
                    let serverData = response.data {
                     completion(.failure(NetworkError.serverError(serverData)))
                     return
@@ -70,7 +80,12 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
                     completion(.failure(NetworkError.statusCode(statusCode)))
                     return
                 }
-                completion(.failure(error is NetworkError ? error : NetworkError.afError(error)))
+                if case .requestAdaptationFailed(let error) = afError,
+                   let networkError = error as? NetworkError {
+                    completion(.failure(networkError))
+                } else {
+                    completion(.failure(NetworkError.afError(afError)))
+                }
             }
         }
         return NetworkRequestImpl(request: request)
@@ -88,12 +103,17 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
                 switch response.result {
                 case .success(let data):
                     newResult = .success(data)
-                case .failure(let error):
+                case .failure(let afError):
                     if let statusCode = response.response?.statusCode {
                         newResult = .failure(NetworkError.statusCode(statusCode))
                         break
                     }
-                    newResult = .failure(error is NetworkError ? error : NetworkError.afError(error))
+                    if case .requestAdaptationFailed(let error) = afError,
+                       let networkError = error as? NetworkError {
+                        newResult = .failure(networkError)
+                    } else {
+                        newResult = .failure(NetworkError.afError(afError))
+                    }
                 }
                 return newResult
             }
@@ -111,12 +131,17 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
                 switch response.result {
                 case .success(let data):
                     newResult = .success(data)
-                case .failure(let error):
+                case .failure(let afError):
                     if let statusCode = response.response?.statusCode {
                         newResult = .failure(NetworkError.statusCode(statusCode))
                         break
                     }
-                    newResult = .failure(error is NetworkError ? error : NetworkError.afError(error))
+                    if case .requestAdaptationFailed(let error) = afError,
+                       let networkError = error as? NetworkError {
+                        newResult = .failure(networkError)
+                    } else {
+                        newResult = .failure(NetworkError.afError(afError))
+                    }
                 }
                 return newResult
             }
@@ -137,8 +162,8 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
                 switch response.result {
                 case .success(let data):
                     newResult = .success(data)
-                case .failure(let error):
-                    if case .responseSerializationFailed = error,
+                case .failure(let afError):
+                    if case .responseSerializationFailed = afError,
                        let serverData = response.data {
                         newResult = .failure(NetworkError.serverError(serverData))
                         break
@@ -147,7 +172,12 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
                         newResult = .failure(NetworkError.statusCode(statusCode))
                         break
                     }
-                    newResult = .failure(error is NetworkError ? error : NetworkError.afError(error))
+                    if case .requestAdaptationFailed(let error) = afError,
+                       let networkError = error as? NetworkError {
+                        newResult = .failure(networkError)
+                    } else {
+                        newResult = .failure(NetworkError.afError(afError))
+                    }
                 }
                 return newResult
             }

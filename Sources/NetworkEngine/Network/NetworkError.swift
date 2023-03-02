@@ -7,6 +7,7 @@ public enum NetworkError: Error {
     case serverError(_ data: Data)
     case prohibitedURLEncoding
     case noInternetConnection
+    case encodableParameterFailure
 }
 
 extension NetworkError {
@@ -23,6 +24,8 @@ extension NetworkError {
             return "Server error \(data)"
         case .statusCode(let statusCode):
             return "Server error code \(statusCode)"
+        case .encodableParameterFailure:
+            return "Encodable parameter serialization failed"
         }
     }
     
@@ -30,7 +33,11 @@ extension NetworkError {
         switch self {
         case .afError(let error):
             return error.underlyingError
-        case .prohibitedURLEncoding, .noInternetConnection, .serverError, .statusCode:
+        case .prohibitedURLEncoding,
+                .noInternetConnection,
+                .serverError,
+                .statusCode,
+                .encodableParameterFailure:
             return nil
         }
     }

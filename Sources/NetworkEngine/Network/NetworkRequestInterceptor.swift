@@ -17,32 +17,8 @@ open class NetworkRequestInterceptor: RequestInterceptor {
                       for session: Session,
                       dueTo error: Error,
                       completion: @escaping (RetryResult) -> Void) {
-        guard retryAttempts < 3 else {
-            completion(.doNotRetry)
-            retryAttempts = 0
-            return
-        }
-        retryAttempts += 1
-        guard let response = request.task?.response as? HTTPURLResponse else {
-            completion(.doNotRetry)
-            retryAttempts = 0
-            return
-        }
-        if response.statusCode == StatusCodes.internalServerError.rawValue {
-            completion(.retryWithDelay(1))
-        } else if response.statusCode == StatusCodes.unauthorized.rawValue {
-            refreshToken() { [weak self] tokenRefreshed in
-                if !tokenRefreshed {
-                    completion(.doNotRetry)
-                    self?.retryAttempts = 0
-                } else {
-                    completion(.retryWithDelay(1))
-                }
-            }
-        } else {
-            completion(.doNotRetry)
-            retryAttempts = 0
-        }
+        let statusCode = (request.task?.response as? HTTPURLResponse)?.statusCode
+        retryCheck(statusCode: statusCode, completion: completion)
     }
     
     public func adapt(_ urlRequest: URLRequest,
@@ -53,5 +29,29 @@ open class NetworkRequestInterceptor: RequestInterceptor {
             return
         }
         completion(.success(urlRequest))
+    }
+    
+    open func retryCheck(statusCode: Int?, completion: @escaping (RetryResult) -> Void) {
+        guard retryAttempts < 3 else {
+            retryAttempts = 0
+            completion(.doNotRetry)
+            return
+        }
+        retryAttempts += 1
+        if statusCode == StatusCodes.internalServerError.rawValue {
+            completion(.retryWithDelay(1))
+        } else if statusCode == StatusCodes.unauthorized.rawValue {
+            refreshToken() { [weak self] tokenRefreshed in
+                if !tokenRefreshed {
+                    self?.retryAttempts = 0
+                    completion(.doNotRetry)
+                } else {
+                    completion(.retryWithDelay(1))
+                }
+            }
+        } else {
+            retryAttempts = 0
+            completion(.doNotRetry)
+        }
     }
 }

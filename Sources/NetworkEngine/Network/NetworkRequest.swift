@@ -1,13 +1,14 @@
 import Foundation
 import Alamofire
 
+/// The NetworkRequest confirming to `Cncellable`
 public protocol NetworkRequest: Cancellable { }
 
+/// Implementation of `NetworkRequest`
 class NetworkRequestImpl: NetworkRequest {
     
-    public var isCancelled: Bool = false
-    
-    var request: Request
+    private (set) var isCancelled: Bool = false
+    private (set) var request: Request
     
     init(request: Request) {
         self.request = request
@@ -21,8 +22,10 @@ class NetworkRequestImpl: NetworkRequest {
     }
 }
 
+// MARK: Extension on NetworkRequest array
 extension Array<NetworkRequest> {
     
+    /// Cancels all the request in current array (if not alreayd finished or cancelled)
     public func cancel() {
         forEach { request in
             request.cancel()

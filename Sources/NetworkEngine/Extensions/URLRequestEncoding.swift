@@ -3,7 +3,6 @@ import Foundation
 internal extension URLRequest {
 
     mutating func encoded(encodable: Encodable, encoder: JSONEncoder = JSONEncoder()) throws -> URLRequest {
-        let encodable = AnyEncodable(encodable)
         httpBody = try encoder.encode(encodable)
         return self
     }

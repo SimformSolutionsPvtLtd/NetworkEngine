@@ -1,10 +1,3 @@
-//
-//  NetworkRequestInterceptorTests.swift
-//  
-//
-//  Created by Nishchal Visavadiya on 07/03/23.
-//
-
 import XCTest
 import Alamofire
 
@@ -70,7 +63,7 @@ class NetworkRequestInterceptorTests: XCTestCase {
         // Unauthorized, should retry up to 3 times
         tokenRefreshed = true
         for i in 0...3 {
-            sut.retryCheck(statusCode: StatusCodes.unauthorized.rawValue) { retryResult in
+            sut.checkAndRetry(statusCode: StatusCodes.unauthorized.rawValue) { retryResult in
                 // Then
                 switch retryResult {
                 case .retry, .doNotRetryWithError, .retryWithDelay:
@@ -84,7 +77,7 @@ class NetworkRequestInterceptorTests: XCTestCase {
         // When
         // Internal server error, should retrun up to 3 times
         for i in 0...3 {
-            sut.retryCheck(statusCode: StatusCodes.internalServerError.rawValue) { retryResult in
+            sut.checkAndRetry(statusCode: StatusCodes.internalServerError.rawValue) { retryResult in
                 // Then
                 switch retryResult {
                 case .retry, .doNotRetryWithError, .retryWithDelay:

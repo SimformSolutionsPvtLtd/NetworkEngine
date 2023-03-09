@@ -2,9 +2,15 @@ import Foundation
 import Alamofire
 import Combine
 
+/// NetworkProviderType implementation based on the given `TargetType`
+/// This struct holds the reponsibility to make the network calls and provide the desired response.
+/// The network calls are implemented using Alamofire
 public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
     
+    /// The type of target
     public typealias Target = Target
+    
+    /// Session on which network calls are made
     private let session: Session
     
     public init(interceptor: NetworkRequestInterceptor) {
@@ -90,11 +96,13 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
         }
         return NetworkRequestImpl(request: request)
     }
-    
-    // MARK: Combine methods
-    
-    @available(macOS 10.15, *)
-    @available(iOS 13.0, *)
+}
+
+// MARK: Combine methods
+@available(macOS 10.15, *)
+@available(iOS 13.0, *)
+extension NetworkProvider: NetworkProviderTypeCombine {
+
     public func request(_ target: Target) -> AnyPublisher<Result<String, NetworkError>, Never> {
         return session.request(target)
             .publishString()
@@ -120,9 +128,7 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
-    
-    @available(macOS 10.15, *)
-    @available(iOS 13.0, *)
+
     public func request(_ target: Target) -> AnyPublisher<Result<Data?, NetworkError>, Never> {
         return session.request(target)
             .publishUnserialized()
@@ -148,9 +154,7 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
-    
-    @available(macOS 10.15, *)
-    @available(iOS 13.0, *)
+
     public func request<T: Decodable>(_ target: Target,
                                       type: T.Type) -> AnyPublisher<Result<T, NetworkError>, Never> {
         let decoder = JSONDecoder()

@@ -1,8 +1,7 @@
 import Foundation
 import Alamofire
 
-
-/// Defines the target type for the networ call
+/// Defines the target type for the network call
 public protocol TargetType: URLRequestConvertible {
     
     /// The target's base `URL`.
@@ -14,7 +13,7 @@ public protocol TargetType: URLRequestConvertible {
     /// The HTTP method used in the request.
     var method: Method { get }
     
-    /// The key decoding stratergy to use
+    /// The key decoding stratergy to use when decoding reponse data
     var keyDecodingStrategy: KeyDecodingStrategy { get }
 
     /// The headers to be used in the request.

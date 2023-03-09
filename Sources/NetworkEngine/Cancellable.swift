@@ -1,10 +1,12 @@
 import Foundation
 
+
+/// Cancellable protocoal whihc can be used to make the `NetworkRequest` cancellable
 public protocol Cancellable {
 
-    /// A Boolean value stating whether a request is cancelled.
+    /// A Boolean value stating whether this cancellanle is cancelled or not
     var isCancelled: Bool { get }
 
-    /// Cancels the represented request.
+    /// Cancel this cancellanle
     func cancel()
 }

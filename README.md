@@ -58,22 +58,54 @@ public enum APITarget: NetworkRepo {
 For the network calls in `request` method of the `NetworkRequestable`, create `NetworkProvider` instance
 
 ```swift
-static let interceptor = NetworkRequestInterceptor(refreshTokenCall, isNetworkReachable)
+static let interceptor = DefaultInterceptor(refreshTokenCall, isNetworkReachable)
 static let provider = NetworkProvider<APITarget>(interceptor: interceptor)
 ```
-where the `NetworkRequestInterceptor` is the defualt interceptor initialized with `refreshTokenCall` and `isNetworkReachable` closures.
+where the `DefaultInterceptor` is the defualt interceptor initialized with `refreshTokenCall` and `isNetworkReachable` closures.
 
 ### NetworkRequestInterceptor: Intercept the network calls
 
-Define your own interceptor using `NetworkRequestInterceptor`. It is an open class where `retry`, `adapt` and `retryCheck` methods are `open`.
-Pass your custom interceptor to the `NetworkProvider`
+Define your own interceptor using `NetworkRequestInterceptor`. Define `retry`, `adapt` methods then pass your custom interceptor to the `NetworkProvider`
 
 ### NetworkTask
+
+The `NetworkTask` defines how you can request the data/files.
+
+```swift
+case requestPlain
+```
+This network task just requests the plain URL formed via basURl and path components of `NetworkTask`
+
+```swift
+case requestData(Data)
+```
+This task forms an HTTP request with the given `Data` in body of the request.
+
+```swift
+case requestJSONEncodable(Encodable)
+```
+This task forms and HTTP request by encoding the given `Encodable` using `JSONEncoder` and add setting the encoded data as request body.
+
+```swift
+case requestCustomJSONEncodable(Encodable, encoder: JSONEncoder)
+```
+This task does the same as above one, only difference is that it uses the provided encoder. Use this task if your request body needs some unconventional encoding and you need to handle it yourself by providing you preconfigured encoder.
+
+```swift
+case requestParameterEncodable(Encodable)
+```
+This task converts the given `Encodable` as key value dictionary and passes them as quesry string for the URL formation.
+
+
+```swift
+case requestParameters(parameters: [String: Any], encoding: ParameterEncoding)
+```
+This task queries the given parameters using gievn `ParameterEncoding` method.
 
 
 ### Errors
 
-Errors are handled in form of `NetworkError`. The `Networkerror.afError`` is a wrapper on error thrown from Almofire side
+Errors are thrown in form of `NetworkError`. The `Networkerror.afError`` is a wrapper on error thrown from Almofire side
 
 ## License
 

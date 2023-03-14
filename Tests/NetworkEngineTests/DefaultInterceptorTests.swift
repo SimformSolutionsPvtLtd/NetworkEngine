@@ -3,16 +3,16 @@ import Alamofire
 
 @testable import NetworkEngine
 
-class NetworkRequestInterceptorTests: XCTestCase {
+class DefaultInterceptorTests: XCTestCase {
     
-    var sut: NetworkRequestInterceptor!
+    var sut: DefaultInterceptor!
     var tokenRefreshed: Bool!
     var networkAccessible: Bool!
     var session: Session!
     var urlRequest: URLRequest!
     
     override func setUpWithError() throws {
-        sut = NetworkRequestInterceptor(refreshToekn, isNetworkAccessesible)
+        sut = DefaultInterceptor(refreshToken, isNetworkAccessesible)
         tokenRefreshed = false
         networkAccessible = false
         session = Session()
@@ -89,7 +89,7 @@ class NetworkRequestInterceptorTests: XCTestCase {
         }
     }
     
-    private func refreshToekn(apiCall: (Bool) -> Void) {
+    private func refreshToken(apiCall: (Bool) -> Void) {
         apiCall(tokenRefreshed)
     }
     

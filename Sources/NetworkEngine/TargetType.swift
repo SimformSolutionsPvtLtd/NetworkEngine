@@ -56,16 +56,9 @@ extension TargetType {
             request.httpBody = bodyData
             let parameterEncoding = URLEncoding(destination: .queryString)
             return try request.encoded(parameters: urlParameters, parameterEncoding: parameterEncoding)
-        case let .requestCompositeParameters(
-            bodyParameters: bodyParameters,
-            bodyEncoding: bodyParameterEncoding,
-            urlParameters: urlParameters
-        ):
-            if let bodyParameterEncoding = bodyParameterEncoding as? URLEncoding,
-               bodyParameterEncoding.destination != .httpBody {
-                throw NetworkError.prohibitedURLEncoding
-            }
-            let bodyfulRequest = try request.encoded(parameters: bodyParameters, parameterEncoding: bodyParameterEncoding)
+        case let .requestCompositeParameters(bodyParameters: bodyParameters, urlParameters: urlParameters):
+            let bodyfulRequest = try request.encoded(parameters: bodyParameters,
+                                                     parameterEncoding: URLEncoding.httpBody)
             let urlEncoding = URLEncoding(destination: .queryString)
             return try bodyfulRequest.encoded(parameters: urlParameters, parameterEncoding: urlEncoding)
         }

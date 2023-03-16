@@ -21,10 +21,6 @@ public enum NetworkError: Error {
     ///     - data: The `Data` of the error, user needs to encode this data into appropriate server error model
     case serverError(_ data: Data)
     
-    /// Prohibited URL encoding error, thrown when you try to use anything except `URLEncoding.httpBody` in
-    /// `TargetType.requestCompositeParameters` case
-    case prohibitedURLEncoding
-    
     /// No active netwok connection error
     case noInternetConnection
     
@@ -39,8 +35,6 @@ extension NetworkError {
         switch self {
         case .afError(let error):
             return error.localizedDescription
-        case .prohibitedURLEncoding:
-            return "Only URLEncoding that `bodyEncoding` accepts is URLEncoding.httpBody. Others like `default`, `queryString` or `methodDependent` are prohibited - if you want to use them, add your parameters to `urlParameters` instead."
         case .noInternetConnection:
             return "No Internet connectivity"
         case .serverError(let data):
@@ -57,8 +51,7 @@ extension NetworkError {
         switch self {
         case .afError(let error):
             return error.underlyingError
-        case .prohibitedURLEncoding,
-                .noInternetConnection,
+        case .noInternetConnection,
                 .serverError,
                 .statusCode,
                 .encodableParameterFailure:

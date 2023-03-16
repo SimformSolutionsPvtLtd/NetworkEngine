@@ -100,12 +100,73 @@ This task converts the given `Encodable` as key value dictionary and passes them
 ```swift
 case requestParameters(parameters: [String: Any], encoding: ParameterEncoding)
 ```
-This task queries the given parameters using gievn `ParameterEncoding` method.
+Queries the given parameters using gievn `ParameterEncoding` method.
 
+```swift
+case requestCompositeData(bodyData: Data, urlParameters: [String: Any])
+```
+Set the given url paramteters and body data in request.
+
+```swift
+case requestCompositeParameters(bodyParameters: [String: Any], urlParameters: [String: Any])
+```
+Encode the body parameters in to body of the request and append the url parameter in to query string of URL
+
+```swift
+case uploadFile(URL)
+```
+Upload the file at the given URL to the destination endpoint
+
+```swift
+case uploadMultipart([MultipartFormData])
+```
+Upload the multiplart from data
+
+```swift
+case uploadCompositeMultipart([MultipartFormData], urlParameters: [String: Any])
+```
+Upload the multiple form data
+
+```swift
+case downloadDestination(DownloadDestination)
+```
+Download the data using given download destination 
+
+```swift
+case downloadParameters(parameters: [String: Any],
+                        encoding: ParameterEncoding,
+                        destination: DownloadDestination)
+```
+Form a downalod request using given paramerters and download the data using given download destination 
 
 ### Errors
 
-Errors are thrown in form of `NetworkError`. The `Networkerror.afError`` is a wrapper on error thrown from Almofire side
+Errors are thrown in form of `NetworkError`.
+
+```swift
+case afError(_ afEror: AFError)
+```
+This error is a wrapper on error thrown from Almofire side
+
+```swift
+case statusCode(_ statusCode: Int)
+```
+Represents the erroros with status codes
+
+```swift
+case serverError(_ data: Data)
+```
+Represents error with server data
+
+```swift
+case noInternetConnection
+```
+Thrown when `DefaultInterceptor` detects no internet on adaptation of network call
+
+```swift
+case encodableParameterFailure
+```
+Thrown when `NetworkTask.requestParameterEncodable` fails to encode the given encodable in to request parameters.
 
 ## License
 

@@ -22,7 +22,7 @@ dependencies: [
 
 ### TargetType: Define the network repository
 
-Confirm to `TargetType` protocol and define your network repo as below, based on your requirements you can deinfe multiple repos same as this one.
+Confirm to `TargetType` protocol and define your network repo as below, based on your requirements you can define multiple repos same as this one.
 
 ```swift
 protocol NetworkRepo: TargetType & NetworkRequestable {
@@ -32,7 +32,7 @@ protocol NetworkRepo: TargetType & NetworkRequestable {
     static func fetchUsers(userListRequest: UserListRequest) -> Self
 }
 ```
-where `NetworkRequestable` defines the available methods for nework calls
+where `NetworkRequestable` defines the available methods for network calls
 
 ```swift
 protocol NetworkRequestable {
@@ -42,7 +42,7 @@ protocol NetworkRequestable {
 }
 ```
 
-Implement the `NetworkRepo` and define the required varaibles and methods using enum with example name `APITarget`.
+Implement the `NetworkRepo` and define the required variables and methods using enum with example name `APITarget`.
 
 ```swift
 public enum APITarget: NetworkRepo {
@@ -61,7 +61,7 @@ For the network calls in `request` method of the `NetworkRequestable`, create `N
 static let interceptor = DefaultInterceptor(refreshTokenCall, isNetworkReachable)
 static let provider = NetworkProvider<APITarget>(interceptor: interceptor)
 ```
-where the `DefaultInterceptor` is the defualt interceptor initialized with `refreshTokenCall` and `isNetworkReachable` closures.
+where the `DefaultInterceptor` is the default interceptor initialized with `refreshTokenCall` and `isNetworkReachable` closures.
 
 ### NetworkRequestInterceptor: Intercept the network calls
 
@@ -94,18 +94,18 @@ This task does the same as above one, only difference is that it uses the provid
 ```swift
 case requestParameterEncodable(Encodable)
 ```
-This task converts the given `Encodable` as key value dictionary and passes them as quesry string for the URL formation.
+This task converts the given `Encodable` as key value dictionary and passes them as query string for the URL formation.
 
 
 ```swift
 case requestParameters(parameters: [String: Any], encoding: ParameterEncoding)
 ```
-Queries the given parameters using gievn `ParameterEncoding` method.
+Queries the given parameters using given `ParameterEncoding` method.
 
 ```swift
 case requestCompositeData(bodyData: Data, urlParameters: [String: Any])
 ```
-Set the given url paramteters and body data in request.
+Set the given url parameters and body data in request.
 
 ```swift
 case requestCompositeParameters(bodyParameters: [String: Any], urlParameters: [String: Any])
@@ -120,7 +120,7 @@ Upload the file at the given URL to the destination endpoint
 ```swift
 case uploadMultipart([MultipartFormData])
 ```
-Upload the multiplart from data
+Upload the multipart from data
 
 ```swift
 case uploadCompositeMultipart([MultipartFormData], urlParameters: [String: Any])
@@ -137,7 +137,7 @@ case downloadParameters(parameters: [String: Any],
                         encoding: ParameterEncoding,
                         destination: DownloadDestination)
 ```
-Form a downalod request using given paramerters and download the data using given download destination 
+Form a download request using given parameters and download the data using given download destination 
 
 ### Errors
 
@@ -146,12 +146,12 @@ Errors are thrown in form of `NetworkError`.
 ```swift
 case afError(_ afEror: AFError)
 ```
-This error is a wrapper on error thrown from Almofire side
+This error is a wrapper on error thrown from Alamofire side
 
 ```swift
 case statusCode(_ statusCode: Int)
 ```
-Represents the erroros with status codes
+Represents the errors with status codes
 
 ```swift
 case serverError(_ data: Data)

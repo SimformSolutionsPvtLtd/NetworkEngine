@@ -1,7 +1,6 @@
 import Foundation
 import Alamofire
 
-
 /// Type of Errors thrown by Network Engine
 /// The Alamofire errors are wrapped in case `NetworkError.afError`
 public enum NetworkError: Error {

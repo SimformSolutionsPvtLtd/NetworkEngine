@@ -2,7 +2,7 @@ import Foundation
 import Alamofire
 
 /// Defines the target type for the network call
-public protocol TargetType: URLRequestConvertible {
+public protocol TargetType: URLRequestConvertible, URLConvertible {
     
     /// The target's base `URL`.
     var baseURL: URL { get }
@@ -24,6 +24,10 @@ public protocol TargetType: URLRequestConvertible {
 }
 
 extension TargetType {
+    
+    public func asURL() throws -> URL {
+        return Foundation.URL(target: self)
+    }
     
     public func asURLRequest() throws -> URLRequest {
         let requestURL = Foundation.URL(target: self)

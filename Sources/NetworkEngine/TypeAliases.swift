@@ -1,6 +1,8 @@
 import Foundation
 import Alamofire
 
+public typealias ProgressHandler = (Progress) -> Void
+
 /// Alamofire
 public typealias Method = Alamofire.HTTPMethod
 public typealias ParameterEncoding = Alamofire.ParameterEncoding

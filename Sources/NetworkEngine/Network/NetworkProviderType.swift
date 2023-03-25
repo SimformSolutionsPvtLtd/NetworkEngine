@@ -30,4 +30,34 @@ public protocol NetworkProviderType {
                                type: T.Type,
                                completion: @escaping (Result<T, NetworkError>) -> Void) -> NetworkRequest
     
+    /// Use this method to upload the given target
+    /// - Parameters:
+    ///   - target: The `Target`
+    ///   - progressHandler: The `ProgressHandler`
+    ///   - completion: The completion handler
+    /// - Returns: The `NetworkRequest`
+    func upload(_ target: Target,
+                progressHandler: ProgressHandler?,
+                completion: @escaping (Result<Data?, NetworkError>) -> Void) -> NetworkRequest
+    
+    /// Use this method to download the given target and get the response in the form of `URL`
+    /// generally use this method to downlod files
+    /// - Parameters:
+    ///   - target: The `Target`
+    ///   - progressHandler: The `ProgressHandler`
+    ///   - completion: The completion handler
+    /// - Returns: The `NetworkRequest`
+    func download(_ target: Target,
+                  progressHandler: ProgressHandler?,
+                  completion: @escaping (Result<URL?, NetworkError>) -> Void) -> NetworkRequest
+    
+    /// Use this method to download the given target and get the response in the form of `Data`
+    /// - Parameters:
+    ///   - target: The `Target`
+    ///   - progressHandler: The `ProgressHandler`
+    ///   - completion: The completion handler
+    /// - Returns: The `NetworkRequest`
+    func download(_ target: Target,
+                         progressHandler: ProgressHandler?,
+                         completion: @escaping (Result<Data?, NetworkError>) -> Void) -> NetworkRequest
 }

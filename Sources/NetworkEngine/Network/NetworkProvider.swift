@@ -13,8 +13,9 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
     /// Session on which network calls are made
     internal let session: Session
     
-    public init(interceptor: NetworkRequestInterceptor) {
-        self.session = Session(interceptor: interceptor)
+    public init(interceptor: NetworkRequestInterceptor,
+                configuration: URLSessionConfiguration = URLSessionConfiguration.af.default) {
+        self.session = Session(configuration: configuration, interceptor: interceptor)
     }
     
     public func request(_ target: Target,

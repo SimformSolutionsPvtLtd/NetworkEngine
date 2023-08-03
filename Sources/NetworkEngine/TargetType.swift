@@ -21,6 +21,9 @@ public protocol TargetType: URLRequestConvertible, URLConvertible {
     
     /// The Network task to be performed.
     var task: NetworkTask { get }
+
+    /// time out interval of request
+    var timeoutInterval: TimeInterval? { get }
 }
 
 extension TargetType {
@@ -35,7 +38,9 @@ extension TargetType {
         var request = URLRequest(url: requestURL)
         request.httpMethod = method.rawValue
         request.allHTTPHeaderFields = self.headers
-
+        if let timeoutInterval = timeoutInterval {
+            request.timeoutInterval = timeoutInterval
+        }
         switch task {
         case .requestPlain, .uploadFile, .uploadMultipart, .downloadDestination:
             return request

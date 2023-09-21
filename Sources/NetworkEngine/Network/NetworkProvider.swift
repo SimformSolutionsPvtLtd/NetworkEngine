@@ -1,9 +1,10 @@
+
 import Foundation
 import Alamofire
 import Combine
 
 /// NetworkProviderType implementation based on the given `TargetType`
-/// This struct holds the reponsibility to make the network calls and provide the desired response.
+/// This struct holds the responsibility to make the network calls and provide the desired response.
 /// The network calls are implemented using Alamofire
 public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
     

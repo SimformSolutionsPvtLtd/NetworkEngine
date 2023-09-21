@@ -1,9 +1,10 @@
+
 import Foundation
 import Combine
 
 @available(macOS 10.15, *)
 @available(iOS 13.0, *)
-/// Protocol defining the combine supported methods for various tyoe of network calls on the `TargetType`
+/// Protocol defining the combine supported methods for various type of network calls on the `TargetType`
 public protocol NetworkProviderTypeCombine {
     
     associatedtype Target: TargetType

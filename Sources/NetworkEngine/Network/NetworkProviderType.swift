@@ -1,6 +1,7 @@
+
 import Foundation
 
-/// Protocol defining the methods for various tyoe of network calls on the `TargetType`
+/// Protocol defining the methods for various type of network calls on the `TargetType`
 public protocol NetworkProviderType {
     
     associatedtype Target: TargetType
@@ -41,7 +42,7 @@ public protocol NetworkProviderType {
                 completion: @escaping (Result<Data?, NetworkError>) -> Void) -> NetworkRequest
     
     /// Use this method to download the given target and get the response in the form of `URL`
-    /// generally use this method to downlod files
+    /// generally use this method to download files
     /// - Parameters:
     ///   - target: The `Target`
     ///   - progressHandler: The `ProgressHandler`

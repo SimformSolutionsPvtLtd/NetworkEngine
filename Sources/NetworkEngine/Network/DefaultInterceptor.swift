@@ -1,3 +1,4 @@
+
 import Foundation
 import Alamofire
 
@@ -18,7 +19,7 @@ public class DefaultInterceptor {
         self.isNetworkReachable = isNetworkReachable
     }
     
-    /// Checks for a retry attempts based on given status codes, if current conditions satify for retry the attempts retry via `completion`
+    /// Checks for a retry attempts based on given status codes, if current conditions satisfy for retry the attempts retry via `completion`
     /// - Parameters:
     ///     - statusCode: The status code received on the response of the network call
     ///     - completion: The completion block to call with the `RetryResult`

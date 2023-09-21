@@ -1,3 +1,4 @@
+
 import Foundation
 import Alamofire
 
@@ -12,7 +13,7 @@ public enum NetworkError: Error {
     
     /// The error containing status code
     /// - Parameters:
-    ///     - statusCode: The status code recieved from server side
+    ///     - statusCode: The status code received from server side
     case statusCode(_ statusCode: Int)
     
     /// The custom body of the error
@@ -20,10 +21,10 @@ public enum NetworkError: Error {
     ///     - data: The `Data` of the error, user needs to encode this data into appropriate server error model
     case serverError(_ data: Data)
     
-    /// No active netwok connection error
+    /// No active network connection error
     case noInternetConnection
     
-    /// Thrown when URL parameter encoding faills in `TargetType.requestParameterEncodable`
+    /// Thrown when URL parameter encoding fails in `TargetType.requestParameterEncodable`
     case encodableParameterFailure
 }
 
@@ -45,7 +46,7 @@ extension NetworkError {
         }
     }
     
-    /// The underlytiying error (if exists)
+    /// The underlying error (if exists)
     var underlyingError: Error? {
         switch self {
         case .afError(let error):

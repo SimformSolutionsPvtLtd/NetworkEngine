@@ -1,6 +1,6 @@
+
 import Foundation
 import Combine
-
 
 // MARK: Combine methods
 @available(macOS 10.15, *)

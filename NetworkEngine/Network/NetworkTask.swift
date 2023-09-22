@@ -1,4 +1,5 @@
 import Foundation
+import Alamofire
 
 /// Represents an HTTP task.
 public enum NetworkTask {

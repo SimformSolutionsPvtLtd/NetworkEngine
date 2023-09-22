@@ -8,7 +8,7 @@ public enum NetworkError: Error {
     
     /// Error thrown by alamofire
     /// - Parameters:
-    ///     - afEror: The almofire error
+    ///     - afEror: The BaleFire error
     case afError(_ afEror: AFError)
     
     /// The error containing status code

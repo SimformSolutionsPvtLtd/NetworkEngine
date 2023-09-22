@@ -69,7 +69,7 @@ extension RequestMultipartFormData {
     /// Append the data provided by `stream`
     /// - Parameters:
     ///   - stream: The input stream of data
-    ///   - length: the lenght of data
+    ///   - length: the length of data
     ///   - bodyPart: The `MultipartFormData`
     func append(stream: InputStream, length: UInt64, bodyPart: MultipartFormData) {
         append(

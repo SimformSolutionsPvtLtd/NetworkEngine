@@ -1,3 +1,4 @@
+
 import XCTest
 import Alamofire
 
@@ -12,7 +13,7 @@ class DefaultInterceptorTests: XCTestCase {
     var urlRequest: URLRequest!
     
     override func setUpWithError() throws {
-        sut = DefaultInterceptor(refreshToken, isNetworkAccessesible)
+        sut = DefaultInterceptor(refreshToken, isNetworkAccessible)
         tokenRefreshed = false
         networkAccessible = false
         session = Session()
@@ -93,7 +94,7 @@ class DefaultInterceptorTests: XCTestCase {
         apiCall(tokenRefreshed)
     }
     
-    private func isNetworkAccessesible() -> Bool {
+    private func isNetworkAccessible() -> Bool {
         return networkAccessible
     }
 }

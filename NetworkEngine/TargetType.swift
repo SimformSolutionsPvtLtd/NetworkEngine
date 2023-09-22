@@ -1,3 +1,4 @@
+
 import Foundation
 import Alamofire
 
@@ -13,7 +14,7 @@ public protocol TargetType: URLRequestConvertible, URLConvertible {
     /// The HTTP method used in the request.
     var method: Method { get }
     
-    /// The key decoding stratergy to use when decoding reponse data
+    /// The key decoding strategy to use when decoding repose data
     var keyDecodingStrategy: KeyDecodingStrategy { get }
 
     /// The headers to be used in the request.

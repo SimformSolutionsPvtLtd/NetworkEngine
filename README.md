@@ -3,7 +3,7 @@
 [![Swift 5.0][swift-badge]][swift-org]
 [![Swift Package Manager][spm-badge]][compatible-badge]
 
-Network engine is the networking library on top of [Alamofire][alamofire], for simplified and testable network
+Network engine is the networking framework on top of [Alamofire][alamofire], for simplified and testable network
 
 ## Installation
 

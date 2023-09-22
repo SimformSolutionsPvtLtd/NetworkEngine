@@ -1,6 +1,7 @@
+
 import Foundation
 
-/// Protocol defining the methods for various tyoe of network calls on the `TargetType`
+/// Protocol defining the methods for various type of network calls on the `TargetType`
 public protocol NetworkProviderType {
     
     associatedtype Target: TargetType

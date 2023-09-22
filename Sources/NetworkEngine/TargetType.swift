@@ -22,10 +22,17 @@ public protocol TargetType: URLRequestConvertible, URLConvertible {
     
     /// The Network task to be performed.
     var task: NetworkTask { get }
+
+    /// time out interval of request
+    var timeoutInterval: TimeInterval { get }
 }
 
 extension TargetType {
-    
+
+    var timeoutInterval: TimeInterval? {
+        return 60.0
+    }
+
     public func asURL() throws -> URL {
         return Foundation.URL(target: self)
     }
@@ -36,6 +43,7 @@ extension TargetType {
         var request = URLRequest(url: requestURL)
         request.httpMethod = method.rawValue
         request.allHTTPHeaderFields = self.headers
+        request.timeoutInterval = timeoutInterval
 
         switch task {
         case .requestPlain, .uploadFile, .uploadMultipart, .downloadDestination:

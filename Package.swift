@@ -5,6 +5,9 @@ import PackageDescription
 
 let package = Package(
     name: "NetworkEngine",
+    platforms: [
+        .watchOS(.v6)
+    ],
     products: [
         .library(
             name: "NetworkEngine",

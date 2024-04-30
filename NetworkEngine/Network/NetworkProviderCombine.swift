@@ -9,6 +9,7 @@ extension NetworkProvider: NetworkProviderTypeCombine {
 
     public func request(_ target: Target) -> AnyPublisher<Result<String, NetworkError>, Never> {
         return session.buildRequest(target: target)
+            .validate()
             .publishString()
             .map { response in
                 let newResult: Result<String, NetworkError>
@@ -16,8 +17,8 @@ extension NetworkProvider: NetworkProviderTypeCombine {
                 case .success(let data):
                     newResult = .success(data)
                 case .failure(let afError):
-                    if let statusCode = response.response?.statusCode {
-                        newResult = .failure(NetworkError.statusCode(statusCode))
+                    if let statusCode = response.response?.statusCode, let serverData = response.data {
+                        newResult = .failure(NetworkError.statusCode(statusCode, serverData))
                         break
                     }
                     if case .requestAdaptationFailed(let error) = afError,
@@ -35,6 +36,7 @@ extension NetworkProvider: NetworkProviderTypeCombine {
 
     public func request(_ target: Target) -> AnyPublisher<Result<Data?, NetworkError>, Never> {
         return session.buildRequest(target: target)
+            .validate()
             .publishUnserialized()
             .map { response in
                 let newResult: Result<Data?, NetworkError>
@@ -42,8 +44,8 @@ extension NetworkProvider: NetworkProviderTypeCombine {
                 case .success(let data):
                     newResult = .success(data)
                 case .failure(let afError):
-                    if let statusCode = response.response?.statusCode {
-                        newResult = .failure(NetworkError.statusCode(statusCode))
+                    if let statusCode = response.response?.statusCode, let serverData = response.data {
+                        newResult = .failure(NetworkError.statusCode(statusCode, serverData))
                         break
                     }
                     if case .requestAdaptationFailed(let error) = afError,
@@ -64,6 +66,7 @@ extension NetworkProvider: NetworkProviderTypeCombine {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = target.keyDecodingStrategy
         return session.buildRequest(target: target)
+            .validate()
             .publishDecodable(type: T.self, decoder: decoder)
             .map { response in
                 let newResult: Result<T, NetworkError>
@@ -76,8 +79,8 @@ extension NetworkProvider: NetworkProviderTypeCombine {
                         newResult = .failure(NetworkError.serverError(serverData))
                         break
                     }
-                    if let statusCode = response.response?.statusCode {
-                        newResult = .failure(NetworkError.statusCode(statusCode))
+                    if let statusCode = response.response?.statusCode, let serverData = response.data {
+                        newResult = .failure(NetworkError.statusCode(statusCode, serverData))
                         break
                     }
                     if case .requestAdaptationFailed(let error) = afError,
@@ -95,7 +98,7 @@ extension NetworkProvider: NetworkProviderTypeCombine {
     
     public func upload(_ target: Target,
                        progressHandler: ProgressHandler?) -> AnyPublisher<Result<Data, NetworkError>, Never> {
-        var request = session.buildRequest(target: target)
+        var request = session.buildRequest(target: target).validate()
         if let progressHandler = progressHandler {
             request = request.uploadProgress(closure: progressHandler)
         }
@@ -105,8 +108,8 @@ extension NetworkProvider: NetworkProviderTypeCombine {
             case .success(let data):
                 newResult = .success(data)
             case .failure(let afError):
-                if let statusCode = uploadResponse.response?.statusCode {
-                    newResult = .failure(NetworkError.statusCode(statusCode))
+                if let statusCode = uploadResponse.response?.statusCode, let serverData = uploadResponse.data {
+                    newResult = .failure(NetworkError.statusCode(statusCode, serverData))
                     break
                 }
                 newResult = .failure(NetworkError.afError(afError))
@@ -119,7 +122,7 @@ extension NetworkProvider: NetworkProviderTypeCombine {
     
     public func download(_ target: Target,
                          progressHandler: ProgressHandler?) -> AnyPublisher<Result<URL, NetworkError>, Never> {
-        var request = session.buildDownloadRequest(target: target)
+        var request = session.buildDownloadRequest(target: target).validate()
         if let progressHandler = progressHandler {
             request = request.uploadProgress(closure: progressHandler)
         }
@@ -130,7 +133,7 @@ extension NetworkProvider: NetworkProviderTypeCombine {
                 newResult = .success(data)
             case .failure(let afError):
                 if let statusCode = uploadResponse.response?.statusCode {
-                    newResult = .failure(NetworkError.statusCode(statusCode))
+                    newResult = .failure(NetworkError.statusCode(statusCode, nil))
                     break
                 }
                 newResult = .failure(NetworkError.afError(afError))
@@ -143,7 +146,7 @@ extension NetworkProvider: NetworkProviderTypeCombine {
     
     public func download(_ target: Target,
                          progressHandler: ProgressHandler?) -> AnyPublisher<Result<Data, NetworkError>, Never> {
-        var request = session.buildDownloadRequest(target: target)
+        var request = session.buildDownloadRequest(target: target).validate()
         if let progressHandler = progressHandler {
             request = request.uploadProgress(closure: progressHandler)
         }
@@ -154,7 +157,7 @@ extension NetworkProvider: NetworkProviderTypeCombine {
                 newResult = .success(data)
             case .failure(let afError):
                 if let statusCode = uploadResponse.response?.statusCode {
-                    newResult = .failure(NetworkError.statusCode(statusCode))
+                    newResult = .failure(NetworkError.statusCode(statusCode, nil))
                     break
                 }
                 newResult = .failure(NetworkError.afError(afError))

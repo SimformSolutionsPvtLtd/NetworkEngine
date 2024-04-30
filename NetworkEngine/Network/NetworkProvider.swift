@@ -21,7 +21,7 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
     
     public func request(_ target: Target,
                         completion: @escaping (Result<String, NetworkError>) -> Void) -> NetworkRequest {
-        let request = session.buildRequest(target: target).responseString { response in
+        let request = session.buildRequest(target: target).validate().responseString { response in
             switch response.result {
             case .success(let data):
                 completion(.success(data))
@@ -31,8 +31,8 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
                     completion(.failure(NetworkError.serverError(serverData)))
                     return
                 }
-                if let statusCode = response.response?.statusCode {
-                    completion(.failure(NetworkError.statusCode(statusCode)))
+                if let statusCode = response.response?.statusCode, let serverData = response.data {
+                    completion(.failure(NetworkError.statusCode(statusCode, serverData)))
                     return
                 }
                 if case .requestAdaptationFailed(let error) = afError,
@@ -49,13 +49,13 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
     public func request(_ target: Target,
                         completion: @escaping (Result<Data?, NetworkError>) -> Void
     ) -> NetworkRequest {
-        let request = session.buildRequest(target: target).response { response in
+        let request = session.buildRequest(target: target).validate().response { response in
             switch response.result {
             case .success(let data):
                 completion(.success(data))
             case .failure(let afError):
-                if let statusCode = response.response?.statusCode {
-                    completion(.failure(NetworkError.statusCode(statusCode)))
+                if let statusCode = response.response?.statusCode, let serverData = response.data {
+                    completion(.failure(NetworkError.statusCode(statusCode, serverData)))
                     return
                 }
                 if case .requestAdaptationFailed(let error) = afError,
@@ -74,7 +74,7 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
                                       completion: @escaping (Result<T, NetworkError>) -> Void) -> NetworkRequest {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = target.keyDecodingStrategy
-        let request = session.buildRequest(target: target).responseDecodable(decoder: decoder) { (response: AFDataResponse<T>) in
+        let request = session.buildRequest(target: target).validate().responseDecodable(decoder: decoder) { (response: AFDataResponse<T>) in
             switch response.result {
             case .success(let data):
                 completion(.success(data))
@@ -84,8 +84,8 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
                     completion(.failure(NetworkError.serverError(serverData)))
                     return
                 }
-                if let statusCode = response.response?.statusCode {
-                    completion(.failure(NetworkError.statusCode(statusCode)))
+                if let statusCode = response.response?.statusCode, let serverData = response.data {
+                    completion(.failure(NetworkError.statusCode(statusCode, serverData)))
                     return
                 }
                 if case .requestAdaptationFailed(let error) = afError,
@@ -102,7 +102,7 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
     public func upload(_ target: Target,
                        progressHandler: ProgressHandler? = nil,
                        completion: @escaping (Result<Data?, NetworkError>) -> Void) -> NetworkRequest {
-        var request = session.buildRequest(target: target)
+        var request = session.buildRequest(target: target).validate()
         if let progressHandler = progressHandler {
             request = request.uploadProgress(closure: progressHandler)
         }
@@ -111,8 +111,8 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
             case .success(let data):
                 completion(.success(data))
             case .failure(let afError):
-                if let statusCode = uploadResponse.response?.statusCode {
-                    completion(.failure(NetworkError.statusCode(statusCode)))
+                if let statusCode = uploadResponse.response?.statusCode, let serverData = uploadResponse.data {
+                    completion(.failure(NetworkError.statusCode(statusCode, serverData)))
                     return
                 }
                 completion(.failure(NetworkError.afError(afError)))
@@ -124,7 +124,7 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
     public func download(_ target: Target,
                          progressHandler: ProgressHandler? = nil,
                          completion: @escaping (Result<URL?, NetworkError>) -> Void) -> NetworkRequest {
-        var request = session.buildDownloadRequest(target: target)
+        var request = session.buildDownloadRequest(target: target).validate()
         if let progressHandler = progressHandler {
             request = request.uploadProgress(closure: progressHandler)
         }
@@ -134,7 +134,7 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
                 completion(.success(data))
             case .failure(let afError):
                 if let statusCode = downloadResponse.response?.statusCode {
-                    completion(.failure(NetworkError.statusCode(statusCode)))
+                    completion(.failure(NetworkError.statusCode(statusCode, nil)))
                     return
                 }
                 completion(.failure(NetworkError.afError(afError)))
@@ -146,7 +146,7 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
     public func download(_ target: Target,
                          progressHandler: ProgressHandler? = nil,
                          completion: @escaping (Result<Data?, NetworkError>) -> Void) -> NetworkRequest {
-        var request = session.buildDownloadRequest(target: target)
+        var request = session.buildDownloadRequest(target: target).validate()
         if let progressHandler = progressHandler {
             request = request.uploadProgress(closure: progressHandler)
         }
@@ -156,7 +156,7 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
                 completion(.success(data))
             case .failure(let afError):
                 if let statusCode = downloadResponse.response?.statusCode {
-                    completion(.failure(NetworkError.statusCode(statusCode)))
+                    completion(.failure(NetworkError.statusCode(statusCode, nil)))
                     return
                 }
                 completion(.failure(NetworkError.afError(afError)))

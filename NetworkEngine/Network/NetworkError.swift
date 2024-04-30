@@ -14,7 +14,8 @@ public enum NetworkError: Error {
     /// The error containing status code
     /// - Parameters:
     ///     - statusCode: The status code received from server side
-    case statusCode(_ statusCode: Int)
+    ///     - data: The `Data` of the error, user needs to encode this data into appropriate server error model
+    case statusCode(_ statusCode: Int, _ data: Data?)
     
     /// The custom body of the error
     /// - Parameters:
@@ -39,8 +40,12 @@ extension NetworkError {
             return "No Internet connectivity"
         case .serverError(let data):
             return "Server error \(data)"
-        case .statusCode(let statusCode):
-            return "Server error code \(statusCode)"
+        case .statusCode(let statusCode, let data):
+            if let data {
+                return "Server error code \(statusCode) data \(data)"
+            } else {
+                return "Server error code \(statusCode)"
+            }
         case .encodableParameterFailure:
             return "Encodable parameter serialization failed"
         }

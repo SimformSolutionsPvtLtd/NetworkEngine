@@ -10,13 +10,10 @@ public class DefaultInterceptor {
     // MARK: Private vars
     private var retryAttempts = 0
     private let refreshToken: (@escaping (Bool) -> Void) -> Void
-    private let isNetworkReachable: () -> Bool
 
     // MARK: Initialization
-    public init(_ refreshToken: @escaping (@escaping (Bool) -> Void) -> Void,
-                _ isNetworkReachable: @escaping () -> Bool) {
+    public init(_ refreshToken: @escaping (@escaping (Bool) -> Void) -> Void) {
         self.refreshToken = refreshToken
-        self.isNetworkReachable = isNetworkReachable
     }
     
     /// Checks for a retry attempts based on given status codes, if current conditions satisfy for retry the attempts retry via `completion`
@@ -32,7 +29,7 @@ public class DefaultInterceptor {
         retryAttempts += 1
         if statusCode == StatusCodes.internalServerError.rawValue {
             completion(.retryWithDelay(1))
-        } else if statusCode == StatusCodes.unauthorized.rawValue {
+        } else if statusCode == StatusCodes.unAuthorized.rawValue {
             refreshToken() { [weak self] tokenRefreshed in
                 if !tokenRefreshed {
                     self?.retryAttempts = 0
@@ -62,10 +59,6 @@ extension DefaultInterceptor: NetworkRequestInterceptor {
     public func adapt(_ urlRequest: URLRequest,
                       for session: Session,
                       completion: @escaping (Result<URLRequest, Error>) -> Void) {
-        guard isNetworkReachable() else {
-            completion(.failure(NetworkError.noInternetConnection))
-            return
-        }
         completion(.success(urlRequest))
     }
 }

@@ -14,7 +14,7 @@ extension Session {
         case .uploadMultipart(let multipartBody),
                 .uploadCompositeMultipart(let multipartBody, _):
             let formData = RequestMultipartFormData()
-            formData.applyMoyaMultipartFormData(multipartBody)
+            formData.applyMultipartFormData(multipartBody)
             return upload(multipartFormData: formData, with: target)
         case .downloadDestination, .downloadParameters:
             let error = """

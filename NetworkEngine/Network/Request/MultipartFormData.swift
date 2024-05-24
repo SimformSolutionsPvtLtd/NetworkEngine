@@ -86,7 +86,7 @@ extension RequestMultipartFormData {
     /// The body data will be appended based on the provider type (`MultipartFormData.provider`) of the form data
     /// 
     /// - Parameter multipartBody: Array of `MultipartFormData`
-    func applyMoyaMultipartFormData(_ multipartBody: [MultipartFormData]) {
+    func applyMultipartFormData(_ multipartBody: [MultipartFormData]) {
         for bodyPart in multipartBody {
             switch bodyPart.provider {
             case .data(let data):

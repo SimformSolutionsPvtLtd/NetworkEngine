@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B1FEC7322BFFC3FA001AC836 /* NetworkProviderTypeAsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FEC7312BFFC3FA001AC836 /* NetworkProviderTypeAsyncAwait.swift */; };
+		B1FEC7362BFFC451001AC836 /* NetworkProviderAsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FEC7352BFFC451001AC836 /* NetworkProviderAsyncAwait.swift */; };
+		B1FEC7432C00D597001AC836 /* DataResponseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FEC7422C00D597001AC836 /* DataResponseExtensions.swift */; };
+		B1FEC7452C00D5AF001AC836 /* DownloadResponseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FEC7442C00D5AF001AC836 /* DownloadResponseExtensions.swift */; };
 		BA4E79D22AB3366700783E5D /* NetworkEngine.docc in Sources */ = {isa = PBXBuildFile; fileRef = BA4E79D12AB3366700783E5D /* NetworkEngine.docc */; };
 		BA4E79D82AB3366700783E5D /* NetworkEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA4E79CD2AB3366700783E5D /* NetworkEngine.framework */; };
 		BA4E79DD2AB3366700783E5D /* NetworkEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4E79DC2AB3366700783E5D /* NetworkEngineTests.swift */; };
@@ -44,6 +48,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B1FEC7312BFFC3FA001AC836 /* NetworkProviderTypeAsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProviderTypeAsyncAwait.swift; sourceTree = "<group>"; };
+		B1FEC7352BFFC451001AC836 /* NetworkProviderAsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProviderAsyncAwait.swift; sourceTree = "<group>"; };
+		B1FEC7422C00D597001AC836 /* DataResponseExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataResponseExtensions.swift; sourceTree = "<group>"; };
+		B1FEC7442C00D5AF001AC836 /* DownloadResponseExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadResponseExtensions.swift; sourceTree = "<group>"; };
 		BA4E79CD2AB3366700783E5D /* NetworkEngine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NetworkEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA4E79D02AB3366700783E5D /* NetworkEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkEngine.h; sourceTree = "<group>"; };
 		BA4E79D12AB3366700783E5D /* NetworkEngine.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = NetworkEngine.docc; sourceTree = "<group>"; };
@@ -90,6 +98,56 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B1FEC7332BFFC421001AC836 /* ProviderType */ = {
+			isa = PBXGroup;
+			children = (
+				BAC2E7B12AB4683D005B659D /* NetworkProviderType.swift */,
+				BAC2E7AB2AB4683C005B659D /* NetworkProviderTypeCombine.swift */,
+				B1FEC7312BFFC3FA001AC836 /* NetworkProviderTypeAsyncAwait.swift */,
+			);
+			path = ProviderType;
+			sourceTree = "<group>";
+		};
+		B1FEC7342BFFC439001AC836 /* Provider */ = {
+			isa = PBXGroup;
+			children = (
+				BAC2E7AF2AB4683D005B659D /* NetworkProvider.swift */,
+				BAC2E7AD2AB4683D005B659D /* NetworkProviderCombine.swift */,
+				B1FEC7352BFFC451001AC836 /* NetworkProviderAsyncAwait.swift */,
+			);
+			path = Provider;
+			sourceTree = "<group>";
+		};
+		B1FEC7372BFFC4A0001AC836 /* Interceptor */ = {
+			isa = PBXGroup;
+			children = (
+				BAC2E7B02AB4683D005B659D /* DefaultInterceptor.swift */,
+				BAC2E7AC2AB4683C005B659D /* NetworkRequestInterceptor.swift */,
+			);
+			path = Interceptor;
+			sourceTree = "<group>";
+		};
+		B1FEC73B2C009CFC001AC836 /* NetworkError */ = {
+			isa = PBXGroup;
+			children = (
+				BAC2E7B32AB4683D005B659D /* NetworkError.swift */,
+				BAC2E7BF2AB468B9005B659D /* StatusCodes.swift */,
+			);
+			path = NetworkError;
+			sourceTree = "<group>";
+		};
+		B1FEC73C2C009D42001AC836 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				BA4E79F22AB3396100783E5D /* TargetType.swift */,
+				BAC2E7AE2AB4683D005B659D /* NetworkTask.swift */,
+				BA4E79EB2AB3396000783E5D /* Cancellable.swift */,
+				BAC2E7B22AB4683D005B659D /* NetworkRequest.swift */,
+				BA4E79EC2AB3396000783E5D /* MultipartFormData.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
 		BA4E79C32AB3366700783E5D = {
 			isa = PBXGroup;
 			children = (
@@ -111,13 +169,8 @@
 		BA4E79CF2AB3366700783E5D /* NetworkEngine */ = {
 			isa = PBXGroup;
 			children = (
-				BA4E79EB2AB3396000783E5D /* Cancellable.swift */,
-				BA4E79EC2AB3396000783E5D /* MultipartFormData.swift */,
-				BA4E79F22AB3396100783E5D /* TargetType.swift */,
-				BAC2E7BF2AB468B9005B659D /* StatusCodes.swift */,
-				BAC2E7C12AB468C5005B659D /* TypeAliases.swift */,
 				BAC2E7AA2AB4683C005B659D /* Network */,
-				BAC2E7A32AB4682F005B659D /* Extensions */,
+				BAC2E7C12AB468C5005B659D /* TypeAliases.swift */,
 				BA4E79D02AB3366700783E5D /* NetworkEngine.h */,
 				BA4E79D12AB3366700783E5D /* NetworkEngine.docc */,
 			);
@@ -136,26 +189,26 @@
 		BAC2E7A32AB4682F005B659D /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				BAC2E7BD2AB46883005B659D /* EncodableExtension.swift */,
 				BAC2E7A42AB4682F005B659D /* URLExtension.swift */,
-				BAC2E7A52AB4682F005B659D /* URLRequestEncoding.swift */,
 				BAC2E7A62AB4682F005B659D /* SessionExtension.swift */,
+				BAC2E7BD2AB46883005B659D /* EncodableExtension.swift */,
+				BAC2E7A52AB4682F005B659D /* URLRequestEncoding.swift */,
+				B1FEC7422C00D597001AC836 /* DataResponseExtensions.swift */,
+				B1FEC7442C00D5AF001AC836 /* DownloadResponseExtensions.swift */,
 			);
-			path = Extensions;
+			name = Extensions;
+			path = ../Extensions;
 			sourceTree = "<group>";
 		};
 		BAC2E7AA2AB4683C005B659D /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				BAC2E7AB2AB4683C005B659D /* NetworkProviderTypeCombine.swift */,
-				BAC2E7AC2AB4683C005B659D /* NetworkRequestInterceptor.swift */,
-				BAC2E7AD2AB4683D005B659D /* NetworkProviderCombine.swift */,
-				BAC2E7AE2AB4683D005B659D /* NetworkTask.swift */,
-				BAC2E7AF2AB4683D005B659D /* NetworkProvider.swift */,
-				BAC2E7B02AB4683D005B659D /* DefaultInterceptor.swift */,
-				BAC2E7B12AB4683D005B659D /* NetworkProviderType.swift */,
-				BAC2E7B22AB4683D005B659D /* NetworkRequest.swift */,
-				BAC2E7B32AB4683D005B659D /* NetworkError.swift */,
+				B1FEC73C2C009D42001AC836 /* Request */,
+				B1FEC7342BFFC439001AC836 /* Provider */,
+				B1FEC7332BFFC421001AC836 /* ProviderType */,
+				B1FEC7372BFFC4A0001AC836 /* Interceptor */,
+				B1FEC73B2C009CFC001AC836 /* NetworkError */,
+				BAC2E7A32AB4682F005B659D /* Extensions */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -279,12 +332,16 @@
 				BAC2E7BC2AB4683D005B659D /* NetworkError.swift in Sources */,
 				BAC2E7C02AB468B9005B659D /* StatusCodes.swift in Sources */,
 				BA4E79FD2AB3396100783E5D /* TargetType.swift in Sources */,
+				B1FEC7432C00D597001AC836 /* DataResponseExtensions.swift in Sources */,
 				BAC2E7B42AB4683D005B659D /* NetworkProviderTypeCombine.swift in Sources */,
+				B1FEC7322BFFC3FA001AC836 /* NetworkProviderTypeAsyncAwait.swift in Sources */,
 				BA4E79F62AB3396100783E5D /* Cancellable.swift in Sources */,
+				B1FEC7362BFFC451001AC836 /* NetworkProviderAsyncAwait.swift in Sources */,
 				BAC2E7A92AB4682F005B659D /* SessionExtension.swift in Sources */,
 				BAC2E7C22AB468C5005B659D /* TypeAliases.swift in Sources */,
 				BAC2E7BA2AB4683D005B659D /* NetworkProviderType.swift in Sources */,
 				BAC2E7BB2AB4683D005B659D /* NetworkRequest.swift in Sources */,
+				B1FEC7452C00D5AF001AC836 /* DownloadResponseExtensions.swift in Sources */,
 				BA4E79F72AB3396100783E5D /* MultipartFormData.swift in Sources */,
 				BAC2E7BE2AB46883005B659D /* EncodableExtension.swift in Sources */,
 				BAC2E7B82AB4683D005B659D /* NetworkProvider.swift in Sources */,
@@ -605,7 +662,7 @@
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
 				kind = exactVersion;
-				version = 5.6.2;
+				version = 5.9.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

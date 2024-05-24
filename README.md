@@ -3,13 +3,14 @@
 [![Swift 5.0][swift-badge]][swift-org]
 [![Swift Package Manager][spm-badge]][compatible-badge]
 
-Network engine is the networking framework on top of [Alamofire][alamofire], for simplified and testable network
+Network engine is the networking framework on top of [Alamofire][alamofire], for simplified and testable network.
+It supports combine (publishers pattern) and async await
 
 ## Installation
 
 ### Swift Package Manager
 
-The [Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is integrated into the `swift` compiler. 
+The [Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is integrated into the `swift` compiler.
 
 Once you have your Swift package set up, adding Alamofire as a dependency is as easy as adding it to the `dependencies` value of your `Package.swift`.
 
@@ -130,43 +131,33 @@ Upload the multiple form data
 ```swift
 case downloadDestination(DownloadDestination)
 ```
-Download the data using given download destination 
+Download the data using given download destination
 
 ```swift
 case downloadParameters(parameters: [String: Any],
                         encoding: ParameterEncoding,
                         destination: DownloadDestination)
 ```
-Form a download request using given parameters and download the data using given download destination 
+Form a download request using given parameters and download the data using given download destination
 
 ### Errors
 
 Errors are thrown in form of `NetworkError`.
 
 ```swift
-case afError(_ afEror: AFError)
+case networkError(_ error: AFError, _ response: HTTPURLResponse?, _ data: Data?)
 ```
-This error is a wrapper on error thrown from Alamofire side
+This error is a wrapper on error thrown from Alamofire side with additional info
 
 ```swift
-case statusCode(_ statusCode: Int, _ data: Data?)
-```
-Represents the errors with status codes and server data
-
-```swift
-case serverError(_ data: Data)
-```
-Represents error with server data
-
-```swift
-case noInternetConnection
-```
-Thrown when `DefaultInterceptor` detects no internet on adaptation of network call
-
-```swift
-case encodableParameterFailure
+case encodableParameterFailure(error: Error)
 ```
 Thrown when `NetworkTask.requestParameterEncodable` fails to encode the given encodable in to request parameters.
+
+```swift
+case jsonDictionaryConversionFailed
+```
+Json to Dictionary conversion failed for URL parameter encoding
 
 ## License
 
@@ -196,9 +187,8 @@ SOFTWARE.
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
-   [swift-badge]: <https://img.shields.io/badge/Swift-5.0-orange.svg>
-   [swift-org]: <https://swift.org>
-   [alamofire]: <https://github.com/Alamofire/Alamofire>
-   [compatible-badge]: <https://img.shields.io/badge/Swift_Package_Manager-compatible-orange>
-   [spm-badge]: <https://img.shields.io/badge/Swift_Package_Manager-compatible-orange>
-
+[swift-badge]: <https://img.shields.io/badge/Swift-5.0-orange.svg>
+[swift-org]: <https://swift.org>
+[alamofire]: <https://github.com/Alamofire/Alamofire>
+[compatible-badge]: <https://img.shields.io/badge/Swift_Package_Manager-compatible-orange>
+[spm-badge]: <https://img.shields.io/badge/Swift_Package_Manager-compatible-orange>

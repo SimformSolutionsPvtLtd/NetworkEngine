@@ -6,7 +6,7 @@ import Alamofire
 public protocol NetworkRequest: Cancellable { }
 
 /// Implementation of `NetworkRequest`
-class NetworkRequestImpl: NetworkRequest {
+class SimpleNetworkRequest: NetworkRequest {
     
     private (set) var isCancelled: Bool = false
     private (set) var request: Request

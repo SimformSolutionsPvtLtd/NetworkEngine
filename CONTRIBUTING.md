@@ -50,6 +50,14 @@ xcodebuild archive \
 -archivePath "archives/NetworkEngine-watchOS-Simulator"
 ```
 
+```bash
+xcodebuild archive \
+-project NetworkEngine.xcodeproj \
+-scheme NetworkEngine \
+-destination "generic/platform=macOS" \
+-archivePath "archives/NetworkEngine-MacOS"
+```
+
 ### Command to create XCFramework
 ```bash
 xcodebuild -create-xcframework \
@@ -57,6 +65,7 @@ xcodebuild -create-xcframework \
 -archive archives/NetworkEngine-iOS-Simulator.xcarchive -framework NetworkEngine.framework \
 -archive archives/NetworkEngine-watchOS.xcarchive -framework NetworkEngine.framework \
 -archive archives/NetworkEngine-watchOS-Simulator.xcarchive -framework NetworkEngine.framework \
+-archive archives/NetworkEngine-MacOS.xcarchive -framework NetworkEngine.framework \
 -output xcframeworks/NetworkEngine.xcframework
 ```
 Convert the `NetworkEngine.xcframework` to a zip

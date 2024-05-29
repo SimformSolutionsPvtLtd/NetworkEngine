@@ -1,5 +1,4 @@
 
-import Foundation
 import Alamofire
 import Combine
 
@@ -19,63 +18,62 @@ public struct NetworkProvider<Target: TargetType>: NetworkProviderType {
         self.session = Session(configuration: configuration, interceptor: interceptor)
     }
     
-    public func request(_ target: Target,
-                        completion: @escaping (Result<String, NetworkError>) -> Void) -> NetworkRequest {
-        let request = session.buildRequest(target: target)
-            .validate()
-            .responseString { completion($0.mappedResult) }
-        return SimpleNetworkRequest(request: request)
+    public func requestString(_ target: Target) -> StringRequestTask {
+        let request = session.buildRequest(target: target).validate()
+        return StringRequestTaskImplementation(dataRequest: request)
     }
     
-    public func request(_ target: Target,
-                        completion: @escaping (Result<Data?, NetworkError>) -> Void) -> NetworkRequest {
-        let request = session.buildRequest(target: target)
-            .validate()
-            .response { completion($0.mappedResult) }
-        return SimpleNetworkRequest(request: request)
+    public func requestData(_ target: Target) -> DataRequestTask {
+        let request = session.buildRequest(target: target).validate()
+        return DataRequestTaskImplementation(dataRequest: request)
     }
     
-    public func request<T: Decodable>(_ target: Target,
-                                      type: T.Type,
-                                      completion: @escaping (Result<T, NetworkError>) -> Void) -> NetworkRequest {
+    public func requestDecodable(_ target: Target) -> DecodableRequestTask {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = target.keyDecodingStrategy
-        let request = session.buildRequest(target: target)
-            .validate()
-            .responseDecodable(decoder: decoder) { completion($0.mappedResult) }
-        return SimpleNetworkRequest(request: request)
+        let request = session.buildRequest(target: target).validate()
+        return DecodableRequestTaskImplementation(dataRequest: request, decoder: decoder)
     }
     
     public func upload(_ target: Target,
-                       progressHandler: ProgressHandler? = nil,
-                       completion: @escaping (Result<Data?, NetworkError>) -> Void) -> NetworkRequest {
+                       progressHandler: ProgressHandler? = nil) -> UploadTask {
         var request = session.buildRequest(target: target).validate()
         if let progressHandler = progressHandler {
             request = request.uploadProgress(closure: progressHandler)
         }
-        request.response { completion($0.mappedResult) }
-        return SimpleNetworkRequest(request: request)
+        return UploadTaskImplementation(request: request)
     }
     
-    public func download(_ target: Target,
-                         progressHandler: ProgressHandler? = nil,
-                         completion: @escaping (Result<URL?, NetworkError>) -> Void) -> NetworkRequest {
+    public func download(_ target: Target, progressHandler: ProgressHandler?) -> DownloadTask {
         var request = session.buildDownloadRequest(target: target).validate()
         if let progressHandler = progressHandler {
             request = request.downloadProgress(closure: progressHandler)
         }
-        request.response { completion($0.mappedResult) }
-        return SimpleNetworkRequest(request: request)
+        return DownloadTaskImplementation(request: request)
+    }
+}
+
+extension NetworkProvider {
+    
+    public func request(_ target: Target,
+                        completion: @escaping (Result<String, NetworkError>) -> Void) {
+        requestString(target).request(completion: completion)
     }
     
-    public func download(_ target: Target,
-                         progressHandler: ProgressHandler? = nil,
-                         completion: @escaping (Result<Data, NetworkError>) -> Void) -> NetworkRequest {
-        var request = session.buildDownloadRequest(target: target).validate()
-        if let progressHandler = progressHandler {
-            request = request.downloadProgress(closure: progressHandler)
-        }
-        request.responseData { completion($0.mappedResult) }
-        return SimpleNetworkRequest(request: request)
+    public func request(_ target: Target,
+                        completion: @escaping (Result<Data?, NetworkError>) -> Void) {
+        requestData(target).request(completion: completion)
+    }
+    
+    public func request<T: Decodable>(_ target: Target,
+                                      type: T.Type,
+                                      completion: @escaping (Result<T, NetworkError>) -> Void) {
+        requestDecodable(target).request(type: type, completion: completion)
+    }
+    
+    public func upload(_ target: Target,
+                       progressHandler: ProgressHandler? = nil,
+                       completion: @escaping (Result<Data?, NetworkError>) -> Void) {
+        upload(target, progressHandler: progressHandler).upload(completion: completion)
     }
 }

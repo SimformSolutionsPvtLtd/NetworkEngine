@@ -63,7 +63,7 @@ extension TargetType {
         case let .uploadCompositeMultipart(_, urlParameters):
             let parameterEncoding = URLEncoding(destination: .queryString)
             return try request.encoded(parameters: urlParameters, parameterEncoding: parameterEncoding)
-        case let .downloadParameters(parameters, parameterEncoding, _):
+        case let .downloadParameters(parameters, parameterEncoding, _, _):
             return try request.encoded(parameters: parameters, parameterEncoding: parameterEncoding)
         case let .requestCompositeData(bodyData: bodyData, urlParameters: urlParameters):
             request.httpBody = bodyData

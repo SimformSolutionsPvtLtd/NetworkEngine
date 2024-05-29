@@ -24,7 +24,7 @@ public enum NetworkError: LocalizedError {
 extension NetworkError {
     
     ///  The description of the error
-    var errorDescription: String {
+    public var errorDescription: String? {
         switch self {
         case .encodableParameterFailure(let error):
             return error.localizedDescription
@@ -36,7 +36,7 @@ extension NetworkError {
     }
     
     /// The underlying error (if exists)
-    var underlyingError: Error? {
+    public var underlyingError: Error? {
         switch self {
         case .encodableParameterFailure(let error):
             return error

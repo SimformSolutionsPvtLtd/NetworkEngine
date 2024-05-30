@@ -62,7 +62,16 @@ For the network calls in `request` method of the `NetworkRequestable`, create `N
 static let interceptor = DefaultInterceptor(refreshTokenCall, isNetworkReachable)
 static let provider = NetworkProvider<APITarget>(interceptor: interceptor)
 ```
-where the `DefaultInterceptor` is the default interceptor initialized with `refreshTokenCall` and `isNetworkReachable` closures.
+where the `DefaultInterceptor` is the default interceptor initialized with `refreshTokenCall` closure.
+
+The network provider also has methods to get the request tasks based on the request you want to make
+- `StringRequestTask`
+- `DataRequestTask`
+- `DecodableRequestTask`
+- `UploadTask`
+- `DownloadTask`
+
+And then you can call the appropriate methods based on how you want the result. i.e. in the form of callback, publisher or async.
 
 ### NetworkRequestInterceptor: Intercept the network calls
 

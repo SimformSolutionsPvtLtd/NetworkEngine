@@ -16,14 +16,20 @@ extension Session {
             let formData = RequestMultipartFormData()
             formData.applyMultipartFormData(multipartBody)
             return upload(multipartFormData: formData, with: target)
+        case .requestPlain,
+                .requestData,
+                .requestJSONEncodable,
+                .requestCustomJSONEncodable,
+                .requestParameterEncodable,
+                .requestParameters,
+                .requestCompositeData,
+                .requestCompositeParameters:
+            return request(target)
         case .downloadDestination, .downloadParameters:
             let error = """
-                        The task should neither be `downloadDestination` nor `downloadParameters`,
-                        when building data request
+                        The task should not be a download task, when building data request
                         """
             fatalError(error)
-        default:
-            return request(target)
         }
     }
     
@@ -32,15 +38,40 @@ extension Session {
     /// - Returns: The `DataRequest`
     internal func buildDownloadRequest(target: TargetType) -> DownloadRequest {
         switch target.task {
-        case .downloadDestination(let destination),
-                .downloadParameters(_, _, let destination):
-            return download(target, to: destination)
-        default:
+        case .downloadDestination(let destination, let resumeData):
+            return buildDownloadRequest(target: target,
+                                        destination: destination,
+                                        resumeData: resumeData)
+        case .downloadParameters(_, _, let destination, let resumeData):
+            return buildDownloadRequest(target: target,
+                                        destination: destination,
+                                        resumeData: resumeData)
+        case .requestPlain,
+                .requestData,
+                .requestJSONEncodable,
+                .requestCustomJSONEncodable,
+                .requestParameterEncodable,
+                .requestParameters,
+                .requestCompositeData,
+                .uploadFile,
+                .uploadMultipart,
+                .uploadCompositeMultipart,
+                .requestCompositeParameters:
             let error = """
-                        The task should be either `downloadDestination` or `downloadParameters`,
-                        when building download request
+                        The task should be download task when building download request
                         """
             fatalError(error)
+        }
+    }
+    
+    private func buildDownloadRequest(target: TargetType,
+                                      destination: @escaping DownloadDestination,
+                                      resumeData: Data?) -> DownloadRequest {
+        if let resumeData {
+            return download(resumingWith: resumeData,
+                            to: destination)
+        } else {
+            return download(target, to: destination)
         }
     }
 }

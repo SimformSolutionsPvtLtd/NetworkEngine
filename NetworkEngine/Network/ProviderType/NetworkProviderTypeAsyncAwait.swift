@@ -38,20 +38,4 @@ public protocol NetworkProviderTypeAsyncAwait {
     /// - Returns: The result of type `Result<Data, NetworkError>`
     func upload(_ target: Target,
                 progressHandler: ProgressHandler?) async -> Result<Data, NetworkError>
-    
-    /// Use this method to download the given target data and get response in the form URL of resource
-    /// - Parameters:
-    ///   - target: The `Target`
-    ///   - progressHandler: The progress handler
-    /// - Returns: The result of type `Result<URL, NetworkError>`
-    func download(_ target: Target,
-                  progressHandler: ProgressHandler?) async -> Result<URL, NetworkError>
-    
-    /// Use this method to download the given target and get the response in the form of `Data`
-    /// - Parameters:
-    ///   - target: The `Target`
-    ///   - progressHandler: The `ProgressHandler`
-    /// - Returns: The result of type `Result<Data, NetworkError>`
-    func download(_ target: Target,
-                  progressHandler: ProgressHandler?) async -> Result<Data, NetworkError>
 }

@@ -2,8 +2,6 @@
 import Foundation
 import Combine
 
-@available(macOS 10.15, *)
-@available(iOS 13.0, *)
 /// Protocol defining the combine supported methods for various type of network calls on the `TargetType`
 public protocol NetworkProviderTypeCombine {
     
@@ -36,20 +34,4 @@ public protocol NetworkProviderTypeCombine {
     /// - Returns: The `AnyPublisher` of type `Result<Data, NetworkError>`
     func upload(_ target: Target,
                 progressHandler: ProgressHandler?) -> AnyPublisher<Result<Data, NetworkError>, Never>
-    
-    /// Use this method to download the given target data
-    /// - Parameters:
-    ///   - target: The `Target`
-    ///   - progressHandler: The progress handler
-    /// - Returns: The `AnyPublisher` of type `Result<URL, NetworkError>`
-    func download(_ target: Target,
-                  progressHandler: ProgressHandler?) -> AnyPublisher<Result<URL, NetworkError>, Never>
-    
-    /// Use this method to download the given target data
-    /// - Parameters:
-    ///   - target: The `Target`
-    ///   - progressHandler: The progress handler
-    /// - Returns: The `AnyPublisher` of type `Result<Data, NetworkError>`
-    func download(_ target: Target,
-                  progressHandler: ProgressHandler?) -> AnyPublisher<Result<Data, NetworkError>, Never>
 }

@@ -38,11 +38,12 @@ public enum NetworkTask {
     /// A "multipart/form-data" upload task  combined with url parameters.
     case uploadCompositeMultipart([MultipartFormData], urlParameters: [String: Any])
 
-    /// A file download task to a destination.
-    case downloadDestination(DownloadDestination)
+    /// A file download task to a destination with resume data
+    case downloadDestination(DownloadDestination, Data?)
 
     /// A file download task to a destination with extra parameters
     case downloadParameters(parameters: [String: Any],
                             encoding: ParameterEncoding,
-                            destination: DownloadDestination)
+                            destination: DownloadDestination,
+                            resumeData: Data?)
 }

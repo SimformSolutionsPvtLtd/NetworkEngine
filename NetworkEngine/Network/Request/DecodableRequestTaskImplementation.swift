@@ -44,7 +44,7 @@ class DecodableRequestTaskImplementation: DecodableRequestTask {
     }
     
     func request<T>(type: T.Type) async -> Result<T, NetworkError> where T : Decodable {
-        let response = await dataRequest.serializingDecodable(type).response
+        let response = await dataRequest.serializingDecodable(type, decoder: decoder).response
         return response.mappedResult
     }
 }

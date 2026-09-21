@@ -5,6 +5,7 @@
 //  Created by Nishchal Visavadiya on 29/05/24.
 //
 
+import Foundation
 import Combine
 
 /// Defines a request task which could be used to perform cancellation and the request.

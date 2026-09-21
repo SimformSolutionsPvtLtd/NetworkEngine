@@ -5,6 +5,7 @@
 //  Created by Nishchal Visavadiya on 24/05/24.
 //
 
+import Foundation
 import Alamofire
 
 extension DownloadResponse where Failure == AFError {

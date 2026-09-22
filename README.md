@@ -12,13 +12,15 @@ It supports combine (publishers pattern) and async await
 
 The [Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is integrated into the `swift` compiler.
 
-Once you have your Swift package set up, adding Alamofire as a dependency is as easy as adding it to the `dependencies` value of your `Package.swift`.
+Once you have your Swift package set up, adding NetworkEngine as a dependency is as easy as adding it to the `dependencies` value of your `Package.swift`.
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/mobile-simformsolutions/NetworkEngineXC.git", .upToNextMajor(from: "1.0.2"))
+    .package(url: "https://github.com/SimformSolutionsPvtLtd/NetworkEngine.git", .upToNextMajor(from: "2.1.0"))
 ]
 ```
+
+> **Note:** This is a private repository ([SimformSolutionsPvtLtd/NetworkEngine][network-engine-repo]), so it is accessible only via GitHub login. Make sure you're authenticated with a GitHub account that has access before adding it as a package dependency.
 ## Usage
 
 ### TargetType: Define the network repository
@@ -59,7 +61,7 @@ public enum APITarget: NetworkRepo {
 For the network calls in `request` method of the `NetworkRequestable`, create `NetworkProvider` instance
 
 ```swift
-static let interceptor = DefaultInterceptor(refreshTokenCall, isNetworkReachable)
+static let interceptor = DefaultInterceptor(refreshTokenCall)
 static let provider = NetworkProvider<APITarget>(interceptor: interceptor)
 ```
 where the `DefaultInterceptor` is the default interceptor initialized with `refreshTokenCall` closure.
@@ -201,3 +203,4 @@ SOFTWARE.
 [alamofire]: <https://github.com/Alamofire/Alamofire>
 [compatible-badge]: <https://img.shields.io/badge/Swift_Package_Manager-compatible-orange>
 [spm-badge]: <https://img.shields.io/badge/Swift_Package_Manager-compatible-orange>
+[network-engine-repo]: <https://github.com/SimformSolutionsPvtLtd/NetworkEngine>

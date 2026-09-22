@@ -5,6 +5,7 @@
 //  Created by Nishchal Visavadiya on 28/05/24.
 //
 
+import Foundation
 import Alamofire
 import Combine
 
